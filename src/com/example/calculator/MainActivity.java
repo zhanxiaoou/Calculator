@@ -96,14 +96,8 @@ public class MainActivity extends Activity {
 
 		@Override
 		public void onClick(View v) {
-		
-
-
-			
+				
 		TextView text = (TextView)findViewById(R.id.textview);//实例化文本框对象
-		//动态设置文本框文本内容高度
-		int height_in_pixels = text.getLineCount() * text.getLineHeight(); 
-		text.setHeight(height_in_pixels);
 		String t = text.getText().toString();//获取文本框的字符串，t即text
 		Button b = (Button) v;//实例化按钮对象,b即button
 		
