@@ -1,14 +1,13 @@
 package com.example.calculator;
 
-
-
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
-
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
@@ -18,14 +17,12 @@ public class MainActivity extends Activity {
 	
 	double sum = 0;//记录最终结果，默认为0
 	//BigDecimal fault;
-
 	double data1 = 0;//记录待处理数据1(运算符之前)，默认为0
 	double data2 = 0;//记录待处理数据2（运算符之后），默认为0
 	int option = 0;//记录运算符状态，默认为0
 	int point = 0;//记录是否有小数，默认为0
 	int state = 0;//state有两个作用：当输入数字时state==1,需先文本框重置为0，再获取按钮字符；当输入运算符时state==1,需将运算符状态重置为0。
-	
-
+	int back = 0;//只有back为零时，才允许退格。
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
@@ -34,66 +31,118 @@ public class MainActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.main);
 		
-		
-
 		//按钮数字1
 		Button button1 = (Button)findViewById(R.id.number1);
-		button1.setOnClickListener(listener);
+		button1.setOnClickListener(onclicklistener);
+		button1.setOnTouchListener(ontouchlistener);
 		//按钮数字2
 		Button button2 = (Button)findViewById(R.id.number2);
-		button2.setOnClickListener(listener);
+		button2.setOnClickListener(onclicklistener);
+		button2.setOnTouchListener(ontouchlistener);
 		//按钮数字3
 		Button button3 = (Button)findViewById(R.id.number3);
-		button3.setOnClickListener(listener);
+		button3.setOnClickListener(onclicklistener);
+		button3.setOnTouchListener(ontouchlistener);
 		//按钮数字4
 		Button button4 = (Button)findViewById(R.id.number4);
-		button4.setOnClickListener(listener);
+		button4.setOnClickListener(onclicklistener);
+		button4.setOnTouchListener(ontouchlistener);
 		//按钮数字5
 		Button button5 = (Button)findViewById(R.id.number5);
-		button5.setOnClickListener(listener);
+		button5.setOnClickListener(onclicklistener);
+		button5.setOnTouchListener(ontouchlistener);
 		//按钮数字6
 		Button button6 = (Button)findViewById(R.id.number6);
-		button6.setOnClickListener(listener);
+		button6.setOnClickListener(onclicklistener);
+		button6.setOnTouchListener(ontouchlistener);
 		//按钮数字7
 		Button button7 = (Button)findViewById(R.id.number7);
-		button7.setOnClickListener(listener);
+		button7.setOnClickListener(onclicklistener);
+		button7.setOnTouchListener(ontouchlistener);
 		//按钮数字8
 		Button button8 = (Button)findViewById(R.id.number8);
-		button8.setOnClickListener(listener);
+		button8.setOnClickListener(onclicklistener);
+		button8.setOnTouchListener(ontouchlistener);
 		//按钮数字9
 		Button button9 = (Button)findViewById(R.id.number9);
-		button9.setOnClickListener(listener);
+		button9.setOnClickListener(onclicklistener);
+		button9.setOnTouchListener(ontouchlistener);
 		//按钮数字0
 		Button button0 = (Button)findViewById(R.id.number0);
-		button0.setOnClickListener(listener);
+		button0.setOnClickListener(onclicklistener);
+		button0.setOnTouchListener(ontouchlistener);
 		//按钮“+”
 		Button buttonplus = (Button)findViewById(R.id.plus);
-		buttonplus.setOnClickListener(listener);
+		buttonplus.setOnClickListener(onclicklistener);
+		buttonplus.setOnTouchListener(ontouchlistener);
 		//按钮“-”
 		Button buttonminus = (Button)findViewById(R.id.minus);
-		buttonminus.setOnClickListener(listener);
+		buttonminus.setOnClickListener(onclicklistener);
+		buttonminus.setOnTouchListener(ontouchlistener);
 		//按钮“*”
 		Button buttontimes = (Button)findViewById(R.id.times);
-		buttontimes.setOnClickListener(listener);
+		buttontimes.setOnClickListener(onclicklistener);
+		buttontimes.setOnTouchListener(ontouchlistener);
 		//按钮“/”
 		Button buttondivided = (Button)findViewById(R.id.divided);
-		buttondivided.setOnClickListener(listener);
+		buttondivided.setOnClickListener(onclicklistener);
+		buttondivided.setOnTouchListener(ontouchlistener);
 		//按钮"."
 		Button buttondecimal = (Button)findViewById(R.id.decimal);
-		buttondecimal.setOnClickListener(listener);
+		buttondecimal.setOnClickListener(onclicklistener);
+		buttondecimal.setOnTouchListener(ontouchlistener);
 		//按钮"="
 		Button buttonis = (Button)findViewById(R.id.is);
-		buttonis.setOnClickListener(listener);
+		buttonis.setOnClickListener(onclicklistener);
+		buttonis.setOnTouchListener(ontouchlistener);
 		//按钮"AC"
 		Button buttonclean = (Button)findViewById(R.id.clean);
-		buttonclean.setOnClickListener(listener);
+		buttonclean.setOnClickListener(onclicklistener);
+		buttonclean.setOnTouchListener(ontouchlistener);
 		//按钮"Back"
 		Button buttonback = (Button)findViewById(R.id.back);
-		buttonback.setOnClickListener(listener);
+		buttonback.setOnClickListener(onclicklistener);
+		buttonback.setOnTouchListener(ontouchlistener);
 	}
-		//实例化监听对象listener
-	OnClickListener listener = new OnClickListener(){
-
+	
+	//实例化监听器ontouchlistener
+	OnTouchListener ontouchlistener = new OnTouchListener(){		
+		//按钮点击时颜色变化
+		public boolean onTouch(View v,MotionEvent event){			
+			
+			Button b = (Button) v;//实例化按钮对象,b即button
+			
+			//点击数字按钮
+			if(b.getId()==R.id.number1 || b.getId()==R.id.number2 || b.getId()==R.id.number3 || 
+			   b.getId()==R.id.number4 || b.getId()==R.id.number5 || b.getId()==R.id.number6 || 
+			   b.getId()==R.id.number7 || b.getId()==R.id.number8 || b.getId()==R.id.number9 || 
+			   b.getId()==R.id.number0 || b.getId()==R.id.decimal){
+				if(event.getAction()==MotionEvent.ACTION_DOWN){
+					b.setBackgroundResource(R.drawable.framenumber_touch);
+				}				
+				if(event.getAction()==MotionEvent.ACTION_UP){
+					b.setBackgroundResource(R.drawable.framenumber);
+				}							
+			}
+			
+			//点击运算符及操作符按钮
+			if(b.getId()==R.id.back || b.getId()==R.id.plus || b.getId()==R.id.minus || 
+			   b.getId()==R.id.times || b.getId()==R.id.divided || b.getId()==R.id.is || 
+			   b.getId()==R.id.clean){
+						if(event.getAction()==MotionEvent.ACTION_DOWN){
+							b.setBackgroundResource(R.drawable.frameoption_touch);
+						}						
+						if(event.getAction()==MotionEvent.ACTION_UP){
+							b.setBackgroundResource(R.drawable.frameoption);
+						}							
+					}			
+			return false;			
+		}};
+	
+			
+	//实例化监听对象onclicklistener
+	OnClickListener onclicklistener = new OnClickListener(){
+		
 		@Override
 		public void onClick(View v) {
 				
@@ -101,13 +150,11 @@ public class MainActivity extends Activity {
 		String t = text.getText().toString();//获取文本框的字符串，t即text
 		Button b = (Button) v;//实例化按钮对象,b即button
 		
-
-	
-	
 		//输入数字（数字0-9，小数点）
-		if(b.getId()==R.id.number1 || b.getId()==R.id.number2 || b.getId()==R.id.number3 || b.getId()==R.id.number4 || b.getId()==R.id.number5 ||
-		   b.getId()==R.id.number6 || b.getId()==R.id.number7 || b.getId()==R.id.number8 || b.getId()==R.id.number9 || b.getId()==R.id.number0 ||
-		   b.getId()==R.id.decimal){//分两种情况，数字或者小数点
+		if(b.getId()==R.id.number1 || b.getId()==R.id.number2 || b.getId()==R.id.number3 || 
+		   b.getId()==R.id.number4 || b.getId()==R.id.number5 || b.getId()==R.id.number6 || 
+		   b.getId()==R.id.number7 || b.getId()==R.id.number8 || b.getId()==R.id.number9 || 
+		   b.getId()==R.id.number0 || b.getId()==R.id.decimal){//分两种情况，数字或者小数点
 			
 			if(state==1){//当输入数字时state==1,需先文本框重置为0，再获取按钮字符；
 			   t = "0";
@@ -133,36 +180,33 @@ public class MainActivity extends Activity {
 				}				
 			}			
 			text.setText(t);//文本框展示出最新的字符串
+			back=0;
 		}
-		
-		
-		
-		
+						
 		//输入退格符号
 		if(b.getId()==R.id.back){
-			//先判断文本框文本是否为空
-			if(t.equals("")||t==null){
-				text.setText("");
-			}
-			else{
-				t=t.substring(0,t.length()-1);//退格自减字符
-				
-				//当退格之后字符串长度是否为零
-				if(t.length()==0){
-					
-				text.setText("");
-					
+			if(back==0){
+				//先判断文本框文本是否为空
+				if(t.equals("")||t==null){
+					text.setText("0");
 				}
-				else//否则直接打印出字符串
-					text.setText(t);				
+				else{
+					t=t.substring(0,t.length()-1);//退格自减字符
+					
+					//当退格之后字符串长度是否为零
+					if(t.length()==0){
+						
+					text.setText("0");
+						
+					}
+					else//否则直接打印出字符串
+						text.setText(t);				
+				}					
 			}
-				
+			else
+				text.setText(t);
 		}
-		
-		
-		
-		
-	
+			
 		//输入运算符（加减乘除）
 		if(b.getId()==R.id.plus || b.getId()==R.id.minus || b.getId()==R.id.times || b.getId()==R.id.divided){
 			if(state == 1 ){
@@ -202,8 +246,7 @@ public class MainActivity extends Activity {
 								sum= b1.divide(b2,10,BigDecimal.ROUND_DOWN).doubleValue(); 	
 								//sum=data1/data2;
 							break;			
-					}
-					
+					}					
 					/**if(option==1){//加
 						sum = data1 + data2;
 						
@@ -219,15 +262,12 @@ public class MainActivity extends Activity {
 					if(option==4){//除
 						if(data2==0){
 							Toast.makeText(MainActivity.this,"0不能作除数",Toast.LENGTH_SHORT).show();
-							sum = 0;
-						
+							sum = 0;						
 						}
 						else
-						sum=data1/data2;
-						
+						sum=data1/data2;						
 					}*/
-					//sum = fault.doubleValue();
-					
+					//sum = fault.doubleValue();					
 					data1 = sum;
 					state = 1;
 					//此处没有将option重置为0，是因为接下去会根据实际按钮对象重置option
@@ -242,11 +282,8 @@ public class MainActivity extends Activity {
 						text.setText(String.valueOf(sum));
 
 					}
-
 				}
-				catch(NumberFormatException e){//当Double.valueOf(t)会抛出NumberFormatException，执行下方语句
-					
-					
+				catch(NumberFormatException e){//当Double.valueOf(t)会抛出NumberFormatException，执行下方语句										
 					/**String s = null;
 					if(b.getId()==R.id.plus)
 						s="+";
@@ -261,14 +298,9 @@ public class MainActivity extends Activity {
 						s="÷";
 					
 					text.setText(s);
-					*/
-					
-					
-					text.setText("");
-					state = 1;
-					
-					
-					
+					*/										
+					text.setText("0");
+					state = 1;															
 				}
 			}	
 			
@@ -290,9 +322,7 @@ public class MainActivity extends Activity {
 						s="÷";
 					
 					text.setText(s);
-					*/
-					
-					
+					*/										
 					text.setText(t);
 					state = 1;
 				}
@@ -300,7 +330,6 @@ public class MainActivity extends Activity {
 					text.setText(t);
 					state = 1;
 				}
-
 			}
 			//根据输入的运算符重置option	
 			if(b.getId()==R.id.plus)
@@ -313,10 +342,11 @@ public class MainActivity extends Activity {
 				option=3;
 						
 			if(b.getId()==R.id.divided)
-				option=4;
-			
+				option=4;			
 			point = 0;
+			back = 1;//点击运算符后，文本框内容不允许退格
 		}
+		
 		//输入等于号
 		if(b.getId()==R.id.is){
 		 	
@@ -330,7 +360,6 @@ public class MainActivity extends Activity {
 				
 				switch (option){
 					case 1:
-
 						sum = b1.add(b2).doubleValue();
 						//sum = data1 + data2;
 						break;
@@ -356,8 +385,7 @@ public class MainActivity extends Activity {
 				data1 = sum;
 				option = 0;
 				state = 1;
-				
-				
+								
 				if(sum==0.0d)//结果为0.0d时，文本框展示为"0"
 					text.setText("0");
 				else if(sum%1 == 0.0d){//结果没有小数时，文本框展示为整数
@@ -365,24 +393,22 @@ public class MainActivity extends Activity {
 					text.setText(form.format(sum));
 					}	
 				else//按实际结果展示
-					text.setText(String.valueOf(sum));
-					
+					text.setText(String.valueOf(sum));					
 				}
-				catch(NumberFormatException e){
-					
+				catch(NumberFormatException e){					
 					text.setText(t);
 					state = 1;
 				}
 			}	
 			
 			//option为零，直接展示文本框数据
-			else{	
-				
+			else{					
 				text.setText(t);
 				state = 1;
 			}
-	
+			back = 1;//点击等号，运算结果不允许退格
 		}
+		
 		//输入清零符号：将所有全局变量重置为0，文本框归零
 		if(b.getId()==R.id.clean){
 			sum = 0;
@@ -391,6 +417,7 @@ public class MainActivity extends Activity {
 			option = 0;
 			point = 0;
 			state = 0;
+			back = 0;
 			
 			text.setText("0");//文本框归零
 		}
