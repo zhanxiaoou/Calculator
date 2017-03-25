@@ -4,17 +4,32 @@
     android:layout_height="match_parent"
 	android:background="#393939"
     android:stretchColumns="*" >
- 
-	<TableRow>         
+    
+    
+    <TableRow>         
             <TextView 
-			android:id="@+id/textview"			
+			android:id="@+id/expression"			
 			android:layout_span="4"
-            android:layout_height="130dp"
+            android:layout_height="60dp"
             android:paddingLeft="6dp" 
             android:paddingRight="6dp"                            
 			android:gravity="center_vertical|right"
 			android:background="@drawable/frametext"
-			android:textColor="#ffffff"
+			android:textColor="#555555"
+			android:textSize="35sp"
+            android:text=""/>    
+    </TableRow>
+ 
+	<TableRow>         
+            <TextView 
+			android:id="@+id/result"			
+			android:layout_span="4"
+            android:layout_height="60dp"
+            android:paddingLeft="6dp" 
+            android:paddingRight="6dp"                            
+			android:gravity="center_vertical|right"
+			android:background="@drawable/frametext"
+			android:textColor="#555555"
 			android:textSize="50sp"
             android:text="0"/>    
     </TableRow>
@@ -28,21 +43,28 @@
 	     <Button
             android:id="@+id/clean"
             android:layout_height="match_parent"
-            android:background="@drawable/frameoption"
-            android:textColor="#ffffff"
+            android:background="@drawable/frame"
+            android:textColor="#555555"
             android:text="AC"/>	     
 	     <Button
             android:id="@+id/back"
             android:layout_height="match_parent"
-            android:background="@drawable/frameoption"
-            android:textColor="#ffffff"
+            android:background="@drawable/frame"
+            android:textColor="#555555"
             android:text="Back"/>
+	     <Button
+            android:id="@+id/decimal"
+            android:layout_height="match_parent"
+            android:background="@drawable/frame"
+            android:textStyle="bold"
+            android:textColor="#555555"
+            android:text="."/> 
+	     
         <Button
             android:id="@+id/is"
             android:layout_height="match_parent"
-            android:layout_span="2"
-            android:background="@drawable/frameoption"
-            android:textColor="#ffffff"            
+            android:background="@drawable/frame"
+            android:textColor="#555555"            
             android:text="="/>    
 	</TableRow>	
 
@@ -56,29 +78,29 @@
         <Button
             android:id="@+id/number1"
             android:layout_height="match_parent"
-            android:background="@drawable/framenumber" 
-            android:textColor="#ffffff"           
+            android:background="@drawable/frame" 
+            android:textColor="#555555"           
             android:text="1"/>
         
         <Button
             android:id="@+id/number2"
             android:layout_height="match_parent"
-            android:background="@drawable/framenumber"
-            android:textColor="#ffffff"
+            android:background="@drawable/frame"
+            android:textColor="#555555"
             android:text="2"/>
         
         <Button
             android:id="@+id/number3"
             android:layout_height="match_parent"
-            android:background="@drawable/framenumber"
-            android:textColor="#ffffff"
+            android:background="@drawable/frame"
+            android:textColor="#555555"
             android:text="3"/>
         
         <Button
             android:id="@+id/plus"
             android:layout_height="match_parent"
-            android:background="@drawable/frameoption"
-            android:textColor="#ffffff"
+            android:background="@drawable/frame"
+            android:textColor="#555555"
             android:text="+"/>
         
     </TableRow>
@@ -91,29 +113,29 @@
 	     <Button
             android:id="@+id/number4"
             android:layout_height="match_parent"
-            android:background="@drawable/framenumber"
-            android:textColor="#ffffff"
+            android:background="@drawable/frame"
+            android:textColor="#555555"
             android:text="4"/>
         
         <Button
             android:id="@+id/number5"
             android:layout_height="match_parent"
-            android:background="@drawable/framenumber"
-            android:textColor="#ffffff"
+            android:background="@drawable/frame"
+            android:textColor="#555555"
             android:text="5"/>
         
         <Button
             android:id="@+id/number6"
             android:layout_height="match_parent"
-            android:background="@drawable/framenumber"
-            android:textColor="#ffffff"
+            android:background="@drawable/frame"
+            android:textColor="#555555"
             android:text="6"/>
         
         <Button
             android:id="@+id/minus"
             android:layout_height="match_parent"
-            android:background="@drawable/frameoption"
-            android:textColor="#ffffff"
+            android:background="@drawable/frame"
+            android:textColor="#555555"
             android:text="-"/>
 	    
 	</TableRow>
@@ -126,29 +148,29 @@
 	     <Button
             android:id="@+id/number7"
             android:layout_height="match_parent"
-            android:background="@drawable/framenumber"
-            android:textColor="#ffffff"
+            android:background="@drawable/frame"
+            android:textColor="#555555"
             android:text="7"/>
         
         <Button
             android:id="@+id/number8"
             android:layout_height="match_parent"
-            android:background="@drawable/framenumber"
-            android:textColor="#ffffff"
+            android:background="@drawable/frame"
+            android:textColor="#555555"
             android:text="8"/>
         
         <Button
             android:id="@+id/number9"
             android:layout_height="match_parent"
-            android:background="@drawable/framenumber"
-            android:textColor="#ffffff"
+            android:background="@drawable/frame"
+            android:textColor="#555555"
             android:text="9"/>
         
         <Button
             android:id="@+id/times"
             android:layout_height="match_parent"
-            android:background="@drawable/frameoption"
-            android:textColor="#ffffff"
+            android:background="@drawable/frame"
+            android:textColor="#555555"
             android:text="x"/>
 	    
 	</TableRow>
@@ -157,28 +179,34 @@
      android:layout_width="match_parent"     
      android:layout_height="0dp"
      android:layout_weight="1">
+        
+         <Button
+            android:id="@+id/left"
+            android:layout_height="match_parent"
+            android:background="@drawable/frame"
+            android:textColor="#555555"
+            android:text="("/>
 	    
 	     <Button
             android:id="@+id/number0"
             android:layout_height="match_parent"
-            android:background="@drawable/framenumber"
-            android:layout_span="2"
-            android:textColor="#ffffff"
+            android:background="@drawable/frame"
+            android:textColor="#555555"
             android:text="0"/>
         
-        <Button
-            android:id="@+id/decimal"
+         <Button
+            android:id="@+id/right"
             android:layout_height="match_parent"
-            android:background="@drawable/framenumber"
+            android:background="@drawable/frame"
             android:textStyle="bold"
-            android:textColor="#ffffff"
-            android:text="."/>
+            android:textColor="#555555"
+            android:text=")"/>
         
-        <Button
+         <Button
             android:id="@+id/divided"
             android:layout_height="match_parent"
-            android:background="@drawable/frameoption"
-            android:textColor="#ffffff"
+            android:background="@drawable/frame"
+            android:textColor="#555555"
             android:text="÷"/>
 
 	    

@@ -103,44 +103,150 @@ public class MainActivity extends Activity {
 		Button buttonback = (Button)findViewById(R.id.back);
 		buttonback.setOnClickListener(onclicklistener);
 		buttonback.setOnTouchListener(ontouchlistener);
+		//按钮"Back"
+		Button buttonleft = (Button)findViewById(R.id.left);
+		buttonback.setOnClickListener(onclicklistener);
+		buttonback.setOnTouchListener(ontouchlistener);
+		//按钮"Back"
+		Button buttonright = (Button)findViewById(R.id.right);
+		buttonback.setOnClickListener(onclicklistener);
+		buttonback.setOnTouchListener(ontouchlistener);
 	}
 	
 	//实例化监听器ontouchlistener
 	OnTouchListener ontouchlistener = new OnTouchListener(){		
 		//按钮点击时颜色变化
 		public boolean onTouch(View v,MotionEvent event){			
-			
 			Button b = (Button) v;//实例化按钮对象,b即button
-			
-			//点击数字按钮
+
 			if(b.getId()==R.id.number1 || b.getId()==R.id.number2 || b.getId()==R.id.number3 || 
 			   b.getId()==R.id.number4 || b.getId()==R.id.number5 || b.getId()==R.id.number6 || 
 			   b.getId()==R.id.number7 || b.getId()==R.id.number8 || b.getId()==R.id.number9 || 
-			   b.getId()==R.id.number0 || b.getId()==R.id.decimal){
+			   b.getId()==R.id.number0 || b.getId()==R.id.decimal || b.getId()==R.id.back    || 
+			   b.getId()==R.id.plus    || b.getId()==R.id.minus   || b.getId()==R.id.times   || 
+			   b.getId()==R.id.divided || b.getId()==R.id.is      || b.getId()==R.id.clean   ||
+			   b.getId()==R.id.left || b.getId()==R.id.right){
 				if(event.getAction()==MotionEvent.ACTION_DOWN){
-					b.setBackgroundResource(R.drawable.framenumber_touch);
+					b.setBackgroundResource(R.drawable.frame_touch);
 				}				
 				if(event.getAction()==MotionEvent.ACTION_UP){
-					b.setBackgroundResource(R.drawable.framenumber);
+					b.setBackgroundResource(R.drawable.frame);
 				}							
-			}
-			
-			//点击运算符及操作符按钮
-			if(b.getId()==R.id.back || b.getId()==R.id.plus || b.getId()==R.id.minus || 
-			   b.getId()==R.id.times || b.getId()==R.id.divided || b.getId()==R.id.is || 
-			   b.getId()==R.id.clean){
-						if(event.getAction()==MotionEvent.ACTION_DOWN){
-							b.setBackgroundResource(R.drawable.frameoption_touch);
-						}						
-						if(event.getAction()==MotionEvent.ACTION_UP){
-							b.setBackgroundResource(R.drawable.frameoption);
-						}							
-					}			
+			}						
 			return false;			
 		}};
 	
+	//实例化监听器onclicklistener
+	OnClickListener onclicklistener = new OnClickListener(){
+
+		@Override
+		public void onClick(View v) {
+			TextView expression = (TextView)findViewById(R.id.expression);//表达式文本框
+			TextView result = (TextView)findViewById(R.id.result);//结果文本框
+			String e = expression.getText().toString();//获取文本框的字符串，t即text
+			Button b = (Button) v;//实例化按钮对象,b即button
+		
+		//点击数字、小数点、括号、加减乘除按钮时，组成表达式	
+		if(b.getId()==R.id.number1 || b.getId()==R.id.number2 || b.getId()==R.id.number3 || 
+		   b.getId()==R.id.number4 || b.getId()==R.id.number5 || b.getId()==R.id.number6 || 
+		   b.getId()==R.id.number7 || b.getId()==R.id.number8 || b.getId()==R.id.number9 || 
+		   b.getId()==R.id.number0 || b.getId()==R.id.decimal || b.getId()==R.id.plus    || 
+		   b.getId()==R.id.minus   || b.getId()==R.id.times   || b.getId()==R.id.divided || 
+		   b.getId()==R.id.left || b.getId()==R.id.right){
 			
-	//实例化监听对象onclicklistener
+			//不能正常添加字符的特殊情况,c为当前表达式的最后一个字符
+			char c = e.charAt(e.length()-1);
+			//已有小数点的情况
+
+			//
+			
+			//正常添加字符
+			e = e+b.getText();
+			result.setText(e);	
+		}	
+		//点击等于号按钮时，计算出结果
+		if(b.getId()==R.id.is){
+		
+		}	
+		//全清
+		if(b.getId()==R.id.clean){
+		
+		}
+		//退格
+		if( b.getId()==R.id.back){
+		
+		}
+			
+			
+			
+	}};
+		
+		
+		
+	//四则运算方法,依次对字符串中（）、+、-、*、/符号进行查找——拆分——计算，从而完成四则运算。此处运用到递归的思想。
+	public static double arithmetic(String context){
+		int index; 
+		BigDecimal b1;
+		BigDecimal b2;
+		
+		//“()”,由里及外查找括号，先查找最右边的“(”，然后查找与之对应的“)”
+		index = context.lastIndexOf("(");
+		if(index != -1){
+			int rightindex = context.indexOf(")",index);
+			return arithmetic(context.substring(0, index)+arithmetic(context.substring(index+1,rightindex))+context.substring(rightindex+1));			
+		}
+		//到此处，表示此时字符串中已无“()”
+		
+		//“+”
+		index = context.indexOf("+");
+		if(index != -1){
+			b1 = new BigDecimal(arithmetic(context.substring(0, index)));
+			b2 = new BigDecimal(arithmetic(context.substring(index+1)));
+			
+			return b1.add(b2).doubleValue();			
+		}
+		//到此处，表示此时字符串中已无“+”
+		
+		//“-”
+		index = context.lastIndexOf("-");
+		if(index != -1){
+			b1 = new BigDecimal(arithmetic(context.substring(0, index)));
+			b2 = new BigDecimal(arithmetic(context.substring(index+1)));
+			
+			return b1.subtract(b2).doubleValue();	
+		}
+		//到此处，表示此时字符串中已无“-”
+		
+		//“*”
+		index = context.indexOf("*");
+		if(index != -1){
+			b1 = new BigDecimal(arithmetic(context.substring(0, index)));
+			b2 = new BigDecimal(arithmetic(context.substring(index+1)));
+			
+			return b1.multiply(b2).doubleValue();			
+		}
+		//到此处，表示此时字符串中已无“*”
+		
+		//“/”
+		index = context.lastIndexOf("/");
+		if(index != -1){
+			b1 = new BigDecimal(arithmetic(context.substring(0, index)));
+			b2 = new BigDecimal(arithmetic(context.substring(index+1)));
+				
+			
+			if(arithmetic(context.substring(index+1))==0.0d){
+				return (Double) null;
+			}
+			else
+				return b1.divide(b2,10,BigDecimal.ROUND_DOWN).doubleValue(); 	
+		}
+		//到此处，表示此时字符串中已无“/”
+		
+		
+		return Double.parseDouble(context);
+	}
+			
+	/*//实例化监听对象onclicklistener
 	OnClickListener onclicklistener = new OnClickListener(){
 		
 		@Override
@@ -247,7 +353,7 @@ public class MainActivity extends Activity {
 								//sum=data1/data2;
 							break;			
 					}					
-					/**if(option==1){//加
+					*//**if(option==1){//加
 						sum = data1 + data2;
 						
 					}
@@ -266,7 +372,7 @@ public class MainActivity extends Activity {
 						}
 						else
 						sum=data1/data2;						
-					}*/
+					}*//*
 					//sum = fault.doubleValue();					
 					data1 = sum;
 					state = 1;
@@ -284,7 +390,7 @@ public class MainActivity extends Activity {
 					}
 				}
 				catch(NumberFormatException e){//当Double.valueOf(t)会抛出NumberFormatException，执行下方语句										
-					/**String s = null;
+					*//**String s = null;
 					if(b.getId()==R.id.plus)
 						s="+";
 								
@@ -298,7 +404,7 @@ public class MainActivity extends Activity {
 						s="÷";
 					
 					text.setText(s);
-					*/										
+					*//*										
 					text.setText("0");
 					state = 1;															
 				}
@@ -308,7 +414,7 @@ public class MainActivity extends Activity {
 			else{				
 				try{//当t==null时，Double.valueOf(t)会抛出NumberFormatException
 					data1 = Double.valueOf(t);
-					/**String s = null;
+					*//**String s = null;
 					if(b.getId()==R.id.plus)
 						s="+";
 								
@@ -322,7 +428,7 @@ public class MainActivity extends Activity {
 						s="÷";
 					
 					text.setText(s);
-					*/										
+					*//*										
 					text.setText(t);
 					state = 1;
 				}
@@ -421,6 +527,8 @@ public class MainActivity extends Activity {
 			
 			text.setText("0");//文本框归零
 		}
-	}};
+	}};*/
 
+
+	
 }

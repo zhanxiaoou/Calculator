@@ -21,34 +21,37 @@ public final class R {
         public static final int activity_vertical_margin=0x7f040001;
     }
     public static final class drawable {
-        public static final int framenumber=0x7f020000;
-        public static final int framenumber_touch=0x7f020001;
+        public static final int frame=0x7f020000;
+        public static final int frame_touch=0x7f020001;
         public static final int frameoption=0x7f020002;
         public static final int frameoption_touch=0x7f020003;
         public static final int frametext=0x7f020004;
         public static final int ic_launcher=0x7f020005;
     }
     public static final class id {
-        public static final int action_settings=0x7f080013;
-        public static final int back=0x7f080002;
-        public static final int clean=0x7f080001;
-        public static final int decimal=0x7f080011;
-        public static final int divided=0x7f080012;
-        public static final int is=0x7f080003;
-        public static final int minus=0x7f08000b;
-        public static final int number0=0x7f080010;
-        public static final int number1=0x7f080004;
-        public static final int number2=0x7f080005;
-        public static final int number3=0x7f080006;
-        public static final int number4=0x7f080008;
-        public static final int number5=0x7f080009;
-        public static final int number6=0x7f08000a;
-        public static final int number7=0x7f08000c;
-        public static final int number8=0x7f08000d;
-        public static final int number9=0x7f08000e;
-        public static final int plus=0x7f080007;
-        public static final int textview=0x7f080000;
-        public static final int times=0x7f08000f;
+        public static final int action_settings=0x7f080016;
+        public static final int back=0x7f080003;
+        public static final int clean=0x7f080002;
+        public static final int decimal=0x7f080004;
+        public static final int divided=0x7f080015;
+        public static final int expression=0x7f080000;
+        public static final int is=0x7f080005;
+        public static final int left=0x7f080012;
+        public static final int minus=0x7f08000d;
+        public static final int number0=0x7f080013;
+        public static final int number1=0x7f080006;
+        public static final int number2=0x7f080007;
+        public static final int number3=0x7f080008;
+        public static final int number4=0x7f08000a;
+        public static final int number5=0x7f08000b;
+        public static final int number6=0x7f08000c;
+        public static final int number7=0x7f08000e;
+        public static final int number8=0x7f08000f;
+        public static final int number9=0x7f080010;
+        public static final int plus=0x7f080009;
+        public static final int result=0x7f080001;
+        public static final int right=0x7f080014;
+        public static final int times=0x7f080011;
     }
     public static final class layout {
         public static final int main=0x7f030000;
