@@ -10,19 +10,19 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 public class MainActivity extends Activity {
 	
-	double sum = 0;//记录最终结果，默认为0
-	//BigDecimal fault;
+	/*double sum = 0;//记录最终结果，默认为0
 	double data1 = 0;//记录待处理数据1(运算符之前)，默认为0
 	double data2 = 0;//记录待处理数据2（运算符之后），默认为0
 	int option = 0;//记录运算符状态，默认为0
 	int point = 0;//记录是否有小数，默认为0
 	int state = 0;//state有两个作用：当输入数字时state==1,需先文本框重置为0，再获取按钮字符；当输入运算符时state==1,需将运算符状态重置为0。
-	int back = 0;//只有back为零时，才允许退格。
+	int back = 0;//只有back为零时，才允许退格。*/
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
@@ -105,12 +105,12 @@ public class MainActivity extends Activity {
 		buttonback.setOnTouchListener(ontouchlistener);
 		//按钮"Back"
 		Button buttonleft = (Button)findViewById(R.id.left);
-		buttonback.setOnClickListener(onclicklistener);
-		buttonback.setOnTouchListener(ontouchlistener);
+		buttonleft.setOnClickListener(onclicklistener);
+		buttonleft.setOnTouchListener(ontouchlistener);
 		//按钮"Back"
 		Button buttonright = (Button)findViewById(R.id.right);
-		buttonback.setOnClickListener(onclicklistener);
-		buttonback.setOnTouchListener(ontouchlistener);
+		buttonright.setOnClickListener(onclicklistener);
+		buttonright.setOnTouchListener(ontouchlistener);
 	}
 	
 	//实例化监听器ontouchlistener
@@ -141,48 +141,83 @@ public class MainActivity extends Activity {
 
 		@Override
 		public void onClick(View v) {
-			TextView expression = (TextView)findViewById(R.id.expression);//表达式文本框
+			EditText expression = (EditText)findViewById(R.id.expression);//表达式文本框
 			TextView result = (TextView)findViewById(R.id.result);//结果文本框
 			String e = expression.getText().toString();//获取文本框的字符串，t即text
 			Button b = (Button) v;//实例化按钮对象,b即button
 		
-		//点击数字、小数点、括号、加减乘除按钮时，组成表达式	
+		//组成表达式	
+		//输入数字、小数点、运算符、右括号时
 		if(b.getId()==R.id.number1 || b.getId()==R.id.number2 || b.getId()==R.id.number3 || 
 		   b.getId()==R.id.number4 || b.getId()==R.id.number5 || b.getId()==R.id.number6 || 
 		   b.getId()==R.id.number7 || b.getId()==R.id.number8 || b.getId()==R.id.number9 || 
 		   b.getId()==R.id.number0 || b.getId()==R.id.decimal || b.getId()==R.id.plus    || 
-		   b.getId()==R.id.minus   || b.getId()==R.id.times   || b.getId()==R.id.divided || 
-		   b.getId()==R.id.left || b.getId()==R.id.right){
+		   b.getId()==R.id.minus   || b.getId()==R.id.times   || b.getId()==R.id.divided ||
+		   b.getId()==R.id.left    || b.getId()==R.id.right){
+			//特殊情况，点击左括号按钮，若此时字符串最后一个字符为数字或者右括号，先自动添加乘号，然后再添加左括号
+			if(e.length() >= 1 && b.getId()==R.id.left){
+				char c = e.charAt(e.length()-1);
+				if(c=='1'||c=='2'||c=='3'||c=='4'||c=='5'||c=='6'||
+				   c=='7'||c=='8'||c=='9'||c=='0'||c==')'){
+					e = e+"*"+b.getText();					
+				}
+				//直接添加字符
+				else
+					e = e+b.getText();				
+			}
+			else
+				e = e+b.getText();
 			
-			//不能正常添加字符的特殊情况,c为当前表达式的最后一个字符
-			char c = e.charAt(e.length()-1);
-			//已有小数点的情况
-
-			//
-			
-			//正常添加字符
-			e = e+b.getText();
-			result.setText(e);	
+			result.setText("0");
+			expression.setText(e);
+			expression.setSelection(e.length());
 		}	
 		//点击等于号按钮时，计算出结果
 		if(b.getId()==R.id.is){
-		
-		}	
+			try{
+				double sum = arithmetic(e);
+				if(sum==0.0d){//结果为0.0d时，文本框展示为"0"
+					result.setText("0");
+					expression.setText("");
+				}	
+				else if(sum%1 == 0.0d){//结果没有小数时，文本框展示为整数
+					DecimalFormat form = new DecimalFormat("#");
+					result.setText(form.format(sum));
+					expression.setText("");
+				}	
+				else//按实际结果展示
+					result.setText(String.valueOf(sum));
+					expression.setText("");
+			}
+			catch(NumberFormatException n){
+				result.setText("算式有误");
+				expression.setText("");
+			}
+			catch(ArithmeticException a){
+				result.setText("0不能作除数");
+				expression.setText("");
+			}
+		}		
 		//全清
 		if(b.getId()==R.id.clean){
-		
+			result.setText("0");
+			expression.setText("");
 		}
 		//退格
 		if( b.getId()==R.id.back){
-		
-		}
-			
-			
-			
+			try{
+				result.setText("0");
+				e = e.substring(0, e.length()-1);
+				expression.setText(e);
+				expression.setSelection(e.length());
+			}
+			catch(StringIndexOutOfBoundsException s){
+				result.setText("0");
+				expression.setText("");
+			}
+		}			
 	}};
-		
-		
-		
+				
 	//四则运算方法,依次对字符串中（）、+、-、*、/符号进行查找——拆分——计算，从而完成四则运算。此处运用到递归的思想。
 	public static double arithmetic(String context){
 		int index; 
@@ -218,7 +253,7 @@ public class MainActivity extends Activity {
 		//到此处，表示此时字符串中已无“-”
 		
 		//“*”
-		index = context.indexOf("*");
+		index = context.indexOf("x");
 		if(index != -1){
 			b1 = new BigDecimal(arithmetic(context.substring(0, index)));
 			b2 = new BigDecimal(arithmetic(context.substring(index+1)));
@@ -228,24 +263,19 @@ public class MainActivity extends Activity {
 		//到此处，表示此时字符串中已无“*”
 		
 		//“/”
-		index = context.lastIndexOf("/");
+		index = context.lastIndexOf("÷");
 		if(index != -1){
 			b1 = new BigDecimal(arithmetic(context.substring(0, index)));
 			b2 = new BigDecimal(arithmetic(context.substring(index+1)));
 				
-			
-			if(arithmetic(context.substring(index+1))==0.0d){
-				return (Double) null;
-			}
-			else
-				return b1.divide(b2,10,BigDecimal.ROUND_DOWN).doubleValue(); 	
+			return b1.divide(b2,10,BigDecimal.ROUND_DOWN).doubleValue(); 	
 		}
 		//到此处，表示此时字符串中已无“/”
 		
 		
 		return Double.parseDouble(context);
 	}
-			
+	
 	/*//实例化监听对象onclicklistener
 	OnClickListener onclicklistener = new OnClickListener(){
 		

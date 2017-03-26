@@ -7,7 +7,7 @@
     
     
     <TableRow>         
-            <TextView 
+            <EditText 
 			android:id="@+id/expression"			
 			android:layout_span="4"
             android:layout_height="60dp"
@@ -15,8 +15,10 @@
             android:paddingRight="6dp"                            
 			android:gravity="center_vertical|right"
 			android:background="@drawable/frametext"
-			android:textColor="#555555"
+			android:textColor="#ffffff"
 			android:textSize="35sp"
+			android:hint="请输入算式"
+			android:textCursorDrawable="@null"
             android:text=""/>    
     </TableRow>
  
@@ -29,7 +31,7 @@
             android:paddingRight="6dp"                            
 			android:gravity="center_vertical|right"
 			android:background="@drawable/frametext"
-			android:textColor="#555555"
+			android:textColor="#ffffff"
 			android:textSize="50sp"
             android:text="0"/>    
     </TableRow>
