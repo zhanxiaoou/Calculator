@@ -10,7 +10,6 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 
@@ -79,11 +78,11 @@ public class MainActivity extends Activity {
 		Button buttonminus = (Button)findViewById(R.id.minus);
 		buttonminus.setOnClickListener(onclicklistener);
 		buttonminus.setOnTouchListener(ontouchlistener);
-		//按钮“*”
+		//按钮“x”
 		Button buttontimes = (Button)findViewById(R.id.times);
 		buttontimes.setOnClickListener(onclicklistener);
 		buttontimes.setOnTouchListener(ontouchlistener);
-		//按钮“/”
+		//按钮“÷”
 		Button buttondivided = (Button)findViewById(R.id.divided);
 		buttondivided.setOnClickListener(onclicklistener);
 		buttondivided.setOnTouchListener(ontouchlistener);
@@ -141,7 +140,7 @@ public class MainActivity extends Activity {
 
 		@Override
 		public void onClick(View v) {
-			EditText expression = (EditText)findViewById(R.id.expression);//表达式文本框
+			TextView expression = (TextView)findViewById(R.id.expression);//表达式文本框
 			TextView result = (TextView)findViewById(R.id.result);//结果文本框
 			String e = expression.getText().toString();//获取文本框的字符串，t即text
 			Button b = (Button) v;//实例化按钮对象,b即button
@@ -159,7 +158,7 @@ public class MainActivity extends Activity {
 				char c = e.charAt(e.length()-1);
 				if(c=='1'||c=='2'||c=='3'||c=='4'||c=='5'||c=='6'||
 				   c=='7'||c=='8'||c=='9'||c=='0'||c==')'){
-					e = e+"*"+b.getText();					
+					e = e+"x"+b.getText();					
 				}
 				//直接添加字符
 				else
@@ -170,7 +169,6 @@ public class MainActivity extends Activity {
 			
 			result.setText("0");
 			expression.setText(e);
-			expression.setSelection(e.length());
 		}	
 		//点击等于号按钮时，计算出结果
 		if(b.getId()==R.id.is){
@@ -209,7 +207,6 @@ public class MainActivity extends Activity {
 				result.setText("0");
 				e = e.substring(0, e.length()-1);
 				expression.setText(e);
-				expression.setSelection(e.length());
 			}
 			catch(StringIndexOutOfBoundsException s){
 				result.setText("0");
@@ -218,7 +215,7 @@ public class MainActivity extends Activity {
 		}			
 	}};
 				
-	//四则运算方法,依次对字符串中（）、+、-、*、/符号进行查找——拆分——计算，从而完成四则运算。此处运用到递归的思想。
+	//四则运算方法,依次对字符串中()、+、-、x、÷符号进行查找——拆分——计算，从而完成四则运算。此处运用到递归的思想。
 	public static double arithmetic(String context){
 		int index; 
 		BigDecimal b1;
@@ -228,15 +225,17 @@ public class MainActivity extends Activity {
 		index = context.lastIndexOf("(");
 		if(index != -1){
 			int rightindex = context.indexOf(")",index);
-			return arithmetic(context.substring(0, index)+arithmetic(context.substring(index+1,rightindex))+context.substring(rightindex+1));			
+			return arithmetic(context.substring(0, index)+
+					arithmetic(context.substring(index+1,rightindex))+
+					context.substring(rightindex+1));			
 		}
 		//到此处，表示此时字符串中已无“()”
 		
 		//“+”
 		index = context.indexOf("+");
 		if(index != -1){
-			b1 = new BigDecimal(arithmetic(context.substring(0, index)));
-			b2 = new BigDecimal(arithmetic(context.substring(index+1)));
+			b1 = new BigDecimal(Double.toString(arithmetic(context.substring(0, index))));
+			b2 = new BigDecimal(Double.toString(arithmetic(context.substring(index+1))));
 			
 			return b1.add(b2).doubleValue();			
 		}
@@ -245,32 +244,32 @@ public class MainActivity extends Activity {
 		//“-”
 		index = context.lastIndexOf("-");
 		if(index != -1){
-			b1 = new BigDecimal(arithmetic(context.substring(0, index)));
-			b2 = new BigDecimal(arithmetic(context.substring(index+1)));
+			b1 = new BigDecimal(Double.toString(arithmetic(context.substring(0, index))));
+			b2 = new BigDecimal(Double.toString(arithmetic(context.substring(index+1))));
 			
 			return b1.subtract(b2).doubleValue();	
 		}
 		//到此处，表示此时字符串中已无“-”
 		
-		//“*”
+		//“x”
 		index = context.indexOf("x");
 		if(index != -1){
-			b1 = new BigDecimal(arithmetic(context.substring(0, index)));
-			b2 = new BigDecimal(arithmetic(context.substring(index+1)));
+			b1 = new BigDecimal(Double.toString(arithmetic(context.substring(0, index))));
+			b2 = new BigDecimal(Double.toString(arithmetic(context.substring(index+1))));
 			
 			return b1.multiply(b2).doubleValue();			
 		}
-		//到此处，表示此时字符串中已无“*”
+		//到此处，表示此时字符串中已无“x”
 		
-		//“/”
+		//“÷”
 		index = context.lastIndexOf("÷");
 		if(index != -1){
-			b1 = new BigDecimal(arithmetic(context.substring(0, index)));
-			b2 = new BigDecimal(arithmetic(context.substring(index+1)));
+			b1 = new BigDecimal(Double.toString(arithmetic(context.substring(0, index))));
+			b2 = new BigDecimal(Double.toString(arithmetic(context.substring(index+1))));
 				
 			return b1.divide(b2,10,BigDecimal.ROUND_DOWN).doubleValue(); 	
 		}
-		//到此处，表示此时字符串中已无“/”
+		//到此处，表示此时字符串中已无“÷”
 		
 		
 		return Double.parseDouble(context);

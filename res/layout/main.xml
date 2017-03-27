@@ -7,7 +7,7 @@
     
     
     <TableRow>         
-            <EditText 
+            <TextView 
 			android:id="@+id/expression"			
 			android:layout_span="4"
             android:layout_height="60dp"
@@ -18,7 +18,6 @@
 			android:textColor="#ffffff"
 			android:textSize="35sp"
 			android:hint="请输入算式"
-			android:textCursorDrawable="@null"
             android:text=""/>    
     </TableRow>
  
